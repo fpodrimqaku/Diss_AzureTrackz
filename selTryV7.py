@@ -98,7 +98,37 @@ nextbutton.click()
 
 
 
-def getHourRanges():
+def getHourRangesStatic():
+  hours_list = [
+      "9:30 AM - 11:00 AM",
+      "11:35 AM - 3:00 PM",
+      "03:05 PM - 05:00 PM"
+  ]
+  
+  # Define the datetime format
+  datetime_format = "%I:%M %p"
+  
+  # Convert the hours strings to datetime objects
+  datetime_list = []
+  for hours_str in hours_list:
+      start_str, end_str = hours_str.split(" - ")
+      start_time = datetime.strptime(start_str, datetime_format)
+      end_time = datetime.strptime(end_str, datetime_format)
+      datetime_list.append((start_time, end_time))
+  
+  # Convert the datetime objects back to formatted strings
+  formatted_list = []
+  for start_time, end_time in datetime_list:
+      start_str = start_time.strftime(datetime_format)
+      end_str = end_time.strftime(datetime_format)
+      formatted_list.append(f"{start_str} - {end_str}")
+
+  return datetime_list
+  
+
+
+
+def getHourRangesRandom():
     if activityType_ == "Meeting":
      ranges=[]
      now = datetime.now()
@@ -204,7 +234,7 @@ wait = WebDriverWait(driver, 30)
 
 for task, dates in tasksDatesPairings.items():
     for date in dates:
-        timeRanges = getHourRanges()
+        timeRanges = getHourRangesStatic()
         ## d4d=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-m="2"][data-d="1"][data-y="2022"]')))
 
         locatedLoad1 = driver.find_elements_by_xpath( "//*[@id='ajaxLoaderLoader'][@style='display: none;']")
